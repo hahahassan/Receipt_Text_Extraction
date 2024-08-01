@@ -101,7 +101,7 @@ def extract_json_from_result(result_string):
         return None
 
 
-def main(file_path):
+def process_receipt_file(file_path):
     # Extract text from the provided file (PDF or image)
     receipt_text = extract_text_from_file(file_path)
     # print(receipt_text)
@@ -117,7 +117,7 @@ def main(file_path):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         file_path = sys.argv[1]  # Get file path from command line argument
-        result = main(file_path)
+        result = process_receipt_file(file_path)
         print(result)
     else:
         print("Please provide a file path as a command line argument.")
