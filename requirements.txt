@@ -10,4 +10,3 @@ transformers==4.43.3
 requests==2.32.3
 langchain==0.2.11
 langchain-huggingface==0.0.3
-tesseract-ocr
