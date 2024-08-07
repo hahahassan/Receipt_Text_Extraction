@@ -40,6 +40,7 @@ Remember, if the any information is not explicitly mentioned,
  you should be succint. 
  DO NOT add comment inside the JSON, like this  "Total amount": "25.20", // Inferred as total amount since only one amount is provided".
  If there is only one amount information, you should infer that this is total amount.
+ If there is only one amount information, Do not fill that value into the "Without tax total amount",leave "Without tax total amount" as empty.
  "Without tax total amount","Tax","Total amount" values should be in numberic format.
  If you can't detect , just leave it as "". DO NOT use "Unknown" or "Unavailuable"
 """
