@@ -43,6 +43,7 @@ Remember, if the any information is not explicitly mentioned,
  If there is only one amount information, Do not fill that value into the "Without tax total amount",leave "Without tax total amount" as empty.
  "Without tax total amount","Tax","Total amount" values should be in numberic format.
  If you can't detect , just leave it as "". DO NOT use "Unknown" or "Unavailuable"
+ "Without tax total amount" can not be same as "Total amount"
 """
 
 # Create a function to generate the prompt
