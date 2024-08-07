@@ -10,6 +10,11 @@ This project is designed to extract information from receipt images or PDFs. It 
 4. Use a language model to extract structured information from the extracted text.
 5. Generate a JSON format of the extracted information.
 
+## Process Diagram
+
+![Architecture Diagram](Diagrams/Diagram.JPG)
+
+
 ## How to Use
 
 ### System Requirements
