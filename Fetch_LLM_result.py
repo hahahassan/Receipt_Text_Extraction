@@ -26,7 +26,7 @@ Text from Original Image with Orientation Detection:
 Please provide the extracted information in the following JSON format:
 {{
     "Date": "2024-08-01",
-    "Vendor": "Church's Chicken",
+    "Vendor": "Church's Chicken", 
     "Without tax total amount": "27.50",
     "Tax": "1.38",
     "Total amount": "28.88",
