@@ -69,8 +69,8 @@ To run the script and extract information from a receipt image or PDF, use the f
    {
     "Date": "2022-07-14",
     "Vendor": "Punjab Restaurant",
-    "Without tax total amount": "25.20",
-    "Tax": "",
+    "Without tax total amount": "23.00",
+    "Tax": "2.20",
     "Total amount": "25.20",
     "Country": "Canada",
     "Province": "British Columbia",

@@ -110,6 +110,9 @@ def process_receipt_file(file_path):
     # This function will be called with the extracted text from the receipt.
     extracted_information = extract_information_from_receipt(receipt_text)
     extracted_json = extract_json_from_result(extracted_information)
+    # Logic to update "Without tax total amount" if it is the same as "Total amount"
+    if extracted_json["Without tax total amount"] == extracted_json["Total amount"]:
+        extracted_json["Without tax total amount"] = ""
     return extracted_json
 
 
