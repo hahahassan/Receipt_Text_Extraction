@@ -39,8 +39,7 @@ Remember, if the any information is not explicitly mentioned,
  you should infer it from the other details in the receipt or leave it empty, and explain it in the Comment,
  you should be succint. 
  DO NOT add comment inside the JSON, like this  "Total amount": "25.20", // Inferred as total amount since only one amount is provided".
- If there is only one amount information, you should infer that this is total amount.
- If there is only one amount information, Do not fill that value into the "Without tax total amount",leave "Without tax total amount" as empty.
+ If there is only one amount information, you should infer that this is total amount,do not fill that value into the "Without tax total amount",leave "Without tax total amount" as empty.
  "Without tax total amount","Tax","Total amount" values should be in numberic format.
  If you can't detect , just leave it as "". DO NOT use "Unknown" or "Unavailuable"
  "Without tax total amount" can not be same as "Total amount"
@@ -113,6 +112,8 @@ def process_receipt_file(file_path):
     # Logic to update "Without tax total amount" if it is the same as "Total amount"
     if extracted_json["Without tax total amount"] == extracted_json["Total amount"]:
         extracted_json["Without tax total amount"] = ""
+    if extracted_json["Tax"] == extracted_json["Total amount"]:
+        extracted_json["Tax"] = ""
     return extracted_json
 
 
