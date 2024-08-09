@@ -77,3 +77,10 @@ To run the script and extract information from a receipt image or PDF, use the f
     "Comment": "I inferred the country as Canada and the province as British Columbia based on the vendor location 'Surrey BC' which is a city in the province of British Columbia, Canada."
     }
     ```
+## Acknowledgment
+
+This project uses the [Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) model provided by Meta AI. We would like to acknowledge and thank the creators for making this powerful tool available to the community.
+
+The Meta-Llama-3-8B-Instruct model is licensed under [Meta Llama 3]. Please refer to the [official page](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) for more details.
+
+We utilize this model to extract structured information from the extracted text.

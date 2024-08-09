@@ -70,7 +70,7 @@ def query_huggingface(client, prompt):
 # Use HuggingFace InferenceClient for question answering
 client = InferenceClient(
     model="meta-llama/Meta-Llama-3-8B-Instruct",
-    token=config.HuggingFace_Token_KEY
+    token=HuggingFace_Token_KEY
 )
 
 def extract_information_from_receipt(receipt_text):

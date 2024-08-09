@@ -12,6 +12,12 @@ processed_dir = "Processed_USER_receipts"
 os.makedirs(uploaded_dir, exist_ok=True)
 os.makedirs(processed_dir, exist_ok=True)
 
+# Add "Built with Meta Llama 3" at the top with colorful text
+st.markdown(
+    "<h1 style='text-align: center; color: #FF6347;'>Built with <span style='color: #4682B4;'>Meta Llama 3</span></h1>", 
+    unsafe_allow_html=True
+)
+
 # Streamlit app title
 st.title("Receipt Information Extraction")
 
