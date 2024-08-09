@@ -9,6 +9,7 @@ import re
 from receipt_OCR_processor import extract_text_from_file
 import sys
 import warnings
+import os
 # Suppress FutureWarnings from huggingface_hub
 warnings.filterwarnings('ignore', category=FutureWarning, module='huggingface_hub')
 
@@ -66,6 +67,9 @@ def query_huggingface(client, prompt):
             response_text += message["choices"][0]["delta"].get("content", "")
     # print('messages',messages)
     return response_text
+
+# Retrieve the Hugging Face token from environment variables
+HuggingFace_Token_KEY = os.getenv('HuggingFace_Token_KEY')
 
 # Use HuggingFace InferenceClient for question answering
 client = InferenceClient(
