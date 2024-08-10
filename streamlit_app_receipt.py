@@ -36,10 +36,10 @@ if uploaded_files:
         uploaded_file_list.append(uploaded_file.name)
         
         # Process the file and extract JSON
-        extracted_json = process_receipt_file(file_path)
+        extracted_json,extracted_text = process_receipt_file(file_path)
         if extracted_json:
             extracted_json["file_name"] = uploaded_file.name  # Add file name to JSON result
-            results.append(extracted_json)
+            results.append((extracted_json, extracted_text))
 
 # Display uploaded files
 st.write("## Uploaded Files")
@@ -65,7 +65,7 @@ def display_images(file_name):
 # Display results table with radio buttons
 if results:
     st.write("## Extracted Information")
-    df = pd.DataFrame(results)
+    df = pd.DataFrame([res[0] for res in results])
     
     # Convert appropriate columns to numeric type
     numeric_columns = ["Without tax total amount", "Tax", "Total amount"]
@@ -83,3 +83,8 @@ if results:
 
     # Display the table
     st.dataframe(df)
+
+    # Button to display extracted text
+    if st.button("Show Extracted Text"):
+        st.write("## Extracted Text")
+        st.text(results[selected_idx][1])  # Display the extracted text corresponding to the selected row
