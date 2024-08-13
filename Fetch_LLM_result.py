@@ -24,7 +24,7 @@ Text from Original Image with Orientation Detection:
 {receipt_text}
 ---
 
-Please provide the extracted information in the following JSON format:
+Please provide the extracted information in the following JSON format like this:
 {{
     "Date": "2024-08-01",
     "Vendor": "Church's Chicken", 
@@ -70,7 +70,7 @@ def query_huggingface(client, prompt):
 
 # Retrieve the Hugging Face token from environment variables
 HuggingFace_Token_KEY = os.getenv('HuggingFace_Token_KEY')
-
+# HuggingFace_Token_KEY = config.HuggingFace_Token_KEY
 # Use HuggingFace InferenceClient for question answering
 client = InferenceClient(
     model="meta-llama/Meta-Llama-3-8B-Instruct",
@@ -123,6 +123,8 @@ def process_receipt_file(file_path):
         if "Tax" in extracted_json and "Total amount" in extracted_json:
             if extracted_json["Tax"] == extracted_json["Total amount"]:
                 extracted_json["Tax"] = ""
+        if "Tax" in extracted_json and "Total amount" in extracted_json:
+            extracted_json["Without tax total amount"] = str(float(extracted_json["Total amount"]) - float(extracted_json["Tax"]))
     return extracted_json,receipt_text
 
 

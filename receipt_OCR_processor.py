@@ -4,6 +4,16 @@ import numpy as np
 import fitz  # PyMuPDF
 import pytesseract
 import os
+import pdfplumber
+import sys
+
+# Function to extract text from a PDF file
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
 
 def convert_pdf_to_images(pdf_path, output_folder):
     # Ensure the output folder exists
@@ -48,8 +58,11 @@ def extract_text_from_images(image_paths):
 
 def extract_text_from_file(file_path, output_folder="Processed_images_PDFs"):
     if file_path.lower().endswith('.pdf'):
-        image_paths = convert_pdf_to_images(file_path, output_folder)  # Convert PDF to images
-        texts = extract_text_from_images(image_paths)  # Extract text from images without preprocessing
+        # image_paths = convert_pdf_to_images(file_path, output_folder)  # Convert PDF to images
+        # texts = extract_text_from_images(image_paths)  # Extract text from images without preprocessing
+        extracted_text = extract_text_from_pdf(file_path)
+        texts = extracted_text.replace("\n", "").replace("\t", "")
+        return texts
     else:
         processed_image = preprocess_image(file_path)  # Preprocess the image
         base_name = os.path.splitext(os.path.basename(file_path))[0]  # Get base name of the file without extension
@@ -62,12 +75,13 @@ def extract_text_from_file(file_path, output_folder="Processed_images_PDFs"):
 
 
 if __name__ == "__main__":
-    file_path = r"uploaded-receipts\IMG_1305_9yP7EuA.jpg"  # Replace with your file path (PDF or image)
-    extracted_text = extract_text_from_file(file_path)  # Extract text from the file
-    print(extracted_text)  # Print the extracted text
-    
-    
-
+    # Ensure that a file path argument is provided
+    if len(sys.argv) > 1:
+        file_path = sys.argv[1]  # Get the file path from the command line argument
+        extracted_text = extract_text_from_file(file_path)  # Extract text from the file
+        print(extracted_text)  # Print the extracted text
+    else:
+        print("Please provide the file path as a command-line argument.")
 
 
 
