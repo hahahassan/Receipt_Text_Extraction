@@ -124,7 +124,10 @@ def process_receipt_file(file_path):
             if extracted_json["Tax"] == extracted_json["Total amount"]:
                 extracted_json["Tax"] = ""
         if "Tax" in extracted_json and "Total amount" in extracted_json:
-            extracted_json["Without tax total amount"] = str(float(extracted_json["Total amount"]) - float(extracted_json["Tax"]))
+            try:
+                extracted_json["Without tax total amount"] = str(float(extracted_json["Total amount"]) - float(extracted_json["Tax"]))
+            except ValueError:
+                pass
     return extracted_json,receipt_text
 
 
