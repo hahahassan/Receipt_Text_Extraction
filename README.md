@@ -1,13 +1,12 @@
-# Receipt Information Extraction
+# Receipt Insight Hub
 
 This project is designed to extract information from receipt images or PDFs. It processes the receipts using OCR and extracts structured data such as date, vendor, total amount, tax, and location information. The extracted information is then processed using a language model to provide a structured JSON output.
 
 ## App link https://cpsc-receipt.streamlit.app/ 
 
 ## Features
-
-1. Convert PDF pages to images.
-2. Preprocess images for better OCR results.
+1. Preprocess images for better OCR results.
+2. Extract text from PDF using pdfplumber
 3. Extract text from images using Tesseract OCR.
 4. Use a language model to extract structured information from the extracted text.
 5. Generate a JSON format of the extracted information.

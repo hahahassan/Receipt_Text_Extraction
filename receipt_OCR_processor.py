@@ -7,6 +7,25 @@ import os
 import pdfplumber
 import sys
 
+def preprocess_image(image_path):
+    image = cv2.imread(image_path)  # Read the image
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
+    blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)  # Apply Gaussian blur to reduce noise
+    denoised_image = cv2.fastNlMeansDenoising(blurred_image, h=30)  # Denoise the image
+    adaptive_thresh_image = cv2.adaptiveThreshold(denoised_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)  # Adaptive thresholding
+    kernel = np.ones((3, 3), np.uint8)  # Kernel for morphological operations
+    morph_image = cv2.morphologyEx(adaptive_thresh_image, cv2.MORPH_CLOSE, kernel)  # Morphological closing
+    contrast_image = cv2.convertScaleAbs(morph_image, alpha=1.5, beta=0)  # Adjust contrast
+    return contrast_image
+
+def extract_text_from_images(image_paths):
+    texts = []
+    for image_path in image_paths:
+        img = cv2.imread(image_path)  # Read the image
+        text = pytesseract.image_to_string(img, config='--psm 1')  # Extract text using Tesseract OCR
+        texts.append(text)
+    return texts
+
 # Function to extract text from a PDF file
 def extract_text_from_pdf(pdf_path):
     text = ""
@@ -14,6 +33,23 @@ def extract_text_from_pdf(pdf_path):
         for page in pdf.pages:
             text += page.extract_text()
     return text
+
+def extract_text_from_file(file_path, output_folder="Processed_images_PDFs"):
+    if file_path.lower().endswith('.pdf'):
+        # image_paths = convert_pdf_to_images(file_path, output_folder)  # Convert PDF to images
+        # texts = extract_text_from_images(image_paths)  # Extract text from images without preprocessing
+        extracted_text = extract_text_from_pdf(file_path)
+        texts = extracted_text.replace("\n", "").replace("\t", "")
+        return texts
+    else:
+        processed_image = preprocess_image(file_path)  # Preprocess the image
+        base_name = os.path.splitext(os.path.basename(file_path))[0]  # Get base name of the file without extension
+        processed_image_path = os.path.join(output_folder, f"Processed_{base_name}.png")
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+        cv2.imwrite(processed_image_path, processed_image)  # Save the processed image
+        texts = [pytesseract.image_to_string(processed_image, config='--psm 1')]  # Extract text from the processed image
+    return "\n".join(texts)  # Join extracted texts from all images
 
 def convert_pdf_to_images(pdf_path, output_folder):
     # Ensure the output folder exists
@@ -37,43 +73,6 @@ def convert_pdf_to_images(pdf_path, output_folder):
         image_paths.append(image_path)  # Keep track of saved image paths
     return image_paths
 
-def preprocess_image(image_path):
-    image = cv2.imread(image_path)  # Read the image
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
-    blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)  # Apply Gaussian blur to reduce noise
-    denoised_image = cv2.fastNlMeansDenoising(blurred_image, h=30)  # Denoise the image
-    adaptive_thresh_image = cv2.adaptiveThreshold(denoised_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)  # Adaptive thresholding
-    kernel = np.ones((3, 3), np.uint8)  # Kernel for morphological operations
-    morph_image = cv2.morphologyEx(adaptive_thresh_image, cv2.MORPH_CLOSE, kernel)  # Morphological closing
-    contrast_image = cv2.convertScaleAbs(morph_image, alpha=1.5, beta=0)  # Adjust contrast
-    return contrast_image
-
-def extract_text_from_images(image_paths):
-    texts = []
-    for image_path in image_paths:
-        img = cv2.imread(image_path)  # Read the image
-        text = pytesseract.image_to_string(img, config='--psm 1')  # Extract text using Tesseract OCR
-        texts.append(text)
-    return texts
-
-def extract_text_from_file(file_path, output_folder="Processed_images_PDFs"):
-    if file_path.lower().endswith('.pdf'):
-        # image_paths = convert_pdf_to_images(file_path, output_folder)  # Convert PDF to images
-        # texts = extract_text_from_images(image_paths)  # Extract text from images without preprocessing
-        extracted_text = extract_text_from_pdf(file_path)
-        texts = extracted_text.replace("\n", "").replace("\t", "")
-        return texts
-    else:
-        processed_image = preprocess_image(file_path)  # Preprocess the image
-        base_name = os.path.splitext(os.path.basename(file_path))[0]  # Get base name of the file without extension
-        processed_image_path = os.path.join(output_folder, f"Processed_{base_name}.png")
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
-        cv2.imwrite(processed_image_path, processed_image)  # Save the processed image
-        texts = [pytesseract.image_to_string(processed_image, config='--psm 1')]  # Extract text from the processed image
-    return "\n".join(texts)  # Join extracted texts from all images
-
-
 if __name__ == "__main__":
     # Ensure that a file path argument is provided
     if len(sys.argv) > 1:
@@ -82,6 +81,3 @@ if __name__ == "__main__":
         print(extracted_text)  # Print the extracted text
     else:
         print("Please provide the file path as a command-line argument.")
-
-
-
