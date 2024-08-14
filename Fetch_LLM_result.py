@@ -69,9 +69,16 @@ def query_huggingface(client, prompt):
     return response_text
 
 # Retrieve the Hugging Face token from environment variables
-# HuggingFace_Token_KEY = os.getenv('HuggingFace_Token_KEY')
-HuggingFace_Token_KEY = config.HuggingFace_Token_KEY
+HuggingFace_Token_KEY = os.getenv('HuggingFace_Token_KEY')
+# HuggingFace_Token_KEY = config.HuggingFace_Token_KEY
 # Use HuggingFace InferenceClient for question answering
+
+if not HuggingFace_Token_KEY:
+    raise ValueError("Hugging Face API token not found. Please check your environment variable.")
+else:
+    pass
+
+
 client = InferenceClient(
     model="meta-llama/Meta-Llama-3-8B-Instruct",
     token=HuggingFace_Token_KEY
